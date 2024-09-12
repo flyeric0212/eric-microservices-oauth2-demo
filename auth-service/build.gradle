@@ -1,0 +1,49 @@
+plugins {
+    id 'buildlogic.java-application-conventions'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+ext {
+    lombok_version = '1.18.30'
+    commons_lang3_version = "3.14.0"
+    commons_collections_version = "4.4"
+    mapstructVersion = "1.5.5.Final"
+    auth0JwtVersion = "4.4.0"
+    fastjson2Version = "2.0.45"
+    mybatisStarterVersion = "3.0.3"
+}
+
+dependencies {
+    compileOnly("org.projectlombok:lombok:${lombok_version}")
+    annotationProcessor("org.projectlombok:lombok:${lombok_version}")
+    compileOnly("org.mapstruct:mapstruct-processor:${mapstructVersion}")
+    annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
+
+    // SpringBoot frameworks
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-aop")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-logging")
+    implementation("org.springframework.data:spring-data-commons")
+    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+
+    // Security
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-authorization-server")
+    implementation("org.springframework.security:spring-security-cas")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+
+    // H2 database
+    runtimeOnly("com.h2database:h2")
+    implementation("org.flywaydb:flyway-core")
+    implementation("org.flywaydb:flyway-mysql")
+    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:${mybatisStarterVersion}")
+    implementation("com.github.pagehelper:pagehelper-spring-boot-starter:2.1.0")
+
+    // Misc libs
+    implementation("org.mapstruct:mapstruct:${mapstructVersion}")
+    implementation("com.auth0:java-jwt:${auth0JwtVersion}")
+    implementation("com.alibaba.fastjson2:fastjson2:${fastjson2Version}")
+
+}

@@ -1,0 +1,54 @@
+server:
+  port: 8080
+  shutdown: graceful
+
+management:
+  server:
+    port: 9090
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+spring:
+  profiles:
+    active:
+      - ${ACTIVE_SPRING_PROFILE:local}
+  application:
+    name: api-gateway
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
+  cloud:
+    gateway:
+      httpclient:
+        response-timeout: 10s
+      default-filters:
+        - RemoveRequestHeader=X-Request-From
+        - SecureHeaders
+        - DedupeResponseHeader=X-Frame-Options X-Content-Type-Options X-XSS-Protection
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+          url-expression: "'lb://'+serviceId"
+      routes:
+        - id: auth-service-route
+          uri: ${AUTH_SERVICE_URL:http://localhost:8081}
+          predicates:
+            - Path=/api/auth-service/**
+          filters:
+            - StripPrefix=2
+
+        - id: order-service-route
+          uri: ${ORDER_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/order-service/**
+          filters:
+            - StripPrefix=2
+
+logging:
+  config: classpath:${SPRING_CONFIG_FILE:logback-spring.xml}
+  level:
+    ch.qos.logback: ERROR
+    org.springframework.security: TRACE

@@ -1,0 +1,25 @@
+server:
+  port: 8082
+
+management:
+  server:
+    port: 9082
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+spring:
+  profiles:
+    active:
+      - ${ACTIVE_SPRING_PROFILE:local}
+  application:
+    name: order-service
+  main:
+    allow-bean-definition-overriding: true
+
+
+logging:
+  config: classpath:${SPRING_CONFIG_FILE:logback-spring.xml}
+  level:
+    org.springframework.security: TRACE
